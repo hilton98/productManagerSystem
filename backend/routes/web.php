@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,6 @@ Route::get('/category/{id}', [CategoryController::class, 'getItemById']);
 Route::get('/category', [CategoryController::class, 'getAllItems']);
 Route::delete('/category/{id}', [CategoryController::class, 'delete']);
 Route::put('/category/{id}', [CategoryController::class, 'update']);
+
+Route::post('/product', [ProductController::class, 'create']);
+Route::put('/product/{id}', [ProductController::class, 'update']);

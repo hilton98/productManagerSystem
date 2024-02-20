@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Domain\Repositories;
-use App\Domain\Entities\CategoryEntity;
+use App\Domain\Entities\ProductEntity;
 
-interface CategoryRepositoryInterface
+interface ProductRepositoryInterface
 {
     /**
      * @return array
@@ -11,14 +11,14 @@ interface CategoryRepositoryInterface
     public function findAll();
 
     /**
-     * @return CategoryEntity
+     * @return ProductEntity
     */
     public function findById(int $id);
 
     /**
      * @return void
     */
-    public function save(CategoryEntity $data);
+    public function save(ProductEntity $data);
     
     /**
      * @return bool
