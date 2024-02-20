@@ -1,22 +1,41 @@
 <?php 
 
 namespace App\Http\Controllers;
-use App\Domain\UseCases\CreateProductUseCase;
 use App\Domain\UseCases\UpdateProductUseCase;
+use App\Domain\UseCases\CreateProductUseCase;
+use App\Domain\UseCases\DeleteProductUseCase;
+use App\Domain\UseCases\GetProductUseCase;
+use App\Domain\UseCases\GetAllProductsUseCase;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    private $createProductUseCase;
     private $updateProductUseCase;
+    private $createProductUseCase;
+    private $deleteProductUseCase;
+    private $getProductUseCase;
+    private $getAllProductsUseCase;
 
     public function __construct(
         UpdateProductUseCase $updateProductUseCase,
         CreateProductUseCase $createProductUseCase,
+        DeleteProductUseCase $deleteProductUseCase,
+        GetProductUseCase $getProductUseCase,
+        GetAllProductsUseCase $getAllProductsUseCase,
     )
     {
         $this->updateProductUseCase = $updateProductUseCase;
         $this->createProductUseCase = $createProductUseCase;
+        $this->deleteProductUseCase = $deleteProductUseCase;
+        $this->getProductUseCase = $getProductUseCase;
+        $this->getAllProductsUseCase = $getAllProductsUseCase;
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $formData = $request->json()->all();
+        $result = $this->updateProductUseCase->execute($id, $formData);
+        return response()->json($result, $result['isSuccess'] ? 200 : 400);
     }
 
     public function create(Request $request)
@@ -25,11 +44,34 @@ class ProductController extends Controller
         return response()->json('Created', 201);
     }
 
-    public function update(Request $request, int $id)
+    public function delete(int $id)
     {
-        $formData = $request->json()->all();
-        $result = $this->updateProductUseCase->execute($id, $formData);
-        return response()->json($result, $result['isSuccess'] ? 200 : 400);
+        try {
+            $product = $this->deleteProductUseCase->execute($id);
+            return response()->json(['success' => 'Product removed!'], 204);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+    }
+
+    public function getItemById(int $id)
+    {
+        try {
+            $product = $this->getProductUseCase->execute($id);
+            return response($product->toJson());
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+    }
+
+    public function getAllItems()
+    {
+        try {
+            $products = json_encode($this->getAllProductsUseCase->execute());
+            return response($products);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
     }
 
 }

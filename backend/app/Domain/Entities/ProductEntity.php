@@ -114,7 +114,7 @@ class ProductEntity
             'price' => $this->price,
             'expiration_dt' => $this->expiration_dt,
             'image' => $this->image,
-            'category' => $this->category,
+            'category' => $this->category->toArray(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

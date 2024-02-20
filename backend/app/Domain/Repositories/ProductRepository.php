@@ -10,12 +10,13 @@ class ProductRepository implements ProductRepositoryInterface
 {
     public function findAll(): array
     {
+        $categoryRepository = new CategoryRepository();
         $productMapper = new ProductMapper();
         $itemsQueried = Product::all();
         if ($itemsQueried){
             $products = array();
             foreach ($itemsQueried as &$item){
-                $products[] = $productMapper->modelToEntity($item)->toArray();
+                $products[] = $productMapper->modelToEntity($item, $categoryRepository)->toArray();
             }
             return $products;             
         }
