@@ -1,24 +1,28 @@
 <?php 
 
 namespace App\Domain\UseCases;
+use Illuminate\Support\Facades\DB;
+use App\Domain\Entities\ProductEntity;
+use App\Domain\UseCases\ImageStorageUseCase;
 use App\Domain\Repositories\ProductRepositoryInterface;
 use App\Domain\Repositories\CategoryRepositoryInterface;
-use App\Domain\Entities\ProductEntity;
 use App\Domain\UseCases\Interfaces\CreateProductUseCaseInterface;
-use Illuminate\Support\Facades\DB;
 
 class CreateProductUseCase implements CreateProductUseCaseInterface
 {
     private $productRepository;
     private $categoryRepository;
+    private $imageStorageUseCase;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryRepositoryInterface $categoryRepository,
+        ImageStorageUseCase $imageStorageUseCase
     )
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->imageStorageUseCase = $imageStorageUseCase;
     }
 
     public function execute(array $data): ProductEntity
@@ -28,7 +32,7 @@ class CreateProductUseCase implements CreateProductUseCaseInterface
         $product->setDescription($data['description']);
         $product->setPrice($data['price']);
         $product->setExpirationDt($data['expiration_dt']);
-        $product->setImage($data['image']);
+        $product->setImage($this->imageStorageUseCase->execute($data['image']));
         $product->setCategory(
             $this->categoryRepository->findById($data['categoryId'])
         );

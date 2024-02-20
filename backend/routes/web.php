@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,5 @@ Route::get('/product/{id}', [ProductController::class, 'getItemById']);
 Route::get('/product', [ProductController::class, 'getAllItems']);
 Route::delete('/product/{id}', [ProductController::class, 'delete']);
 Route::put('/product/{id}', [ProductController::class, 'update']);
+
+Route::get('images/{imageName}', [ImageController::class, 'show']);
