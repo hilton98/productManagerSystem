@@ -37,4 +37,12 @@ class CategoryService
         $this->categoryRepository->save($category);
         return $category;
     }
+
+    public function removeCategory(int $id): void
+    {    
+        $isSuccess = $this->categoryRepository->delete($id);
+        if (!$isSuccess)
+            throw new \Exception('Non-existent or previously deleted category!');
+    }
+    
 }

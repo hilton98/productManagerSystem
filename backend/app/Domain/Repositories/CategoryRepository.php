@@ -2,8 +2,8 @@
 
 namespace App\Domain\Repositories;
 use App\Domain\Entities\CategoryEntity;
-use App\Domain\Mappers\CategoryMapper;
 use App\Domain\Repositories\CategoryRepositoryInterface;
+use App\Domain\Mappers\CategoryMapper;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 
@@ -34,14 +34,34 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function save(CategoryEntity $data): void
     {
-        try {
+        try{
             DB::beginTransaction();
-            $categoryModel = new Category;
-            $categoryModel->name = $data->getName();
+            if ($data->getId()) {
+                $categoryModel = Category::findOrFail($data->getId());
+                $categoryModel->name = $data->getName();
+                $categoryModel->updated_at = $data->getUpdatedAt();
+            }else{
+                $categoryModel = new Category;
+                $categoryModel->name = $data->getName();
+            }
             $categoryModel->save();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+        }
+    }
+
+    public function delete(int $id): bool
+    {
+        try{
+            DB::beginTransaction();
+            $itemQueried = Category::findOrFail($id);
+            $itemQueried->delete();
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return false;
         }
     }
 }

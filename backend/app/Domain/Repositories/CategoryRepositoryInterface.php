@@ -2,6 +2,7 @@
 
 namespace App\Domain\Repositories;
 use App\Domain\Entities\CategoryEntity;
+use App\Models\Category;
 
 interface CategoryRepositoryInterface
 {
@@ -20,8 +21,8 @@ interface CategoryRepositoryInterface
     */
     public function save(CategoryEntity $data);
     
-    // /**
-    //  * @return void
-    // */
-    // public function delete(CategoryEntity $data);
+    /**
+     * @return bool
+    */
+    public function delete(int $id);
 }
