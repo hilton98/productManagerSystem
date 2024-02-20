@@ -40,8 +40,12 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        $product = $this->createProductUseCase->execute($request->json()->all());
-        return response()->json('Created', 201);
+        $result = $this->createProductUseCase->execute($request->json()->all());
+
+        if ($result['isSuccess'])
+            return response()->json(['success' => $result['message']], 201);
+
+        return response()->json(['error' => $result['message']], 400);
     }
 
     public function delete(int $id)

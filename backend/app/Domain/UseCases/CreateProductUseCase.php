@@ -25,19 +25,23 @@ class CreateProductUseCase implements CreateProductUseCaseInterface
         $this->imageStorageUseCase = $imageStorageUseCase;
     }
 
-    public function execute(array $data): ProductEntity
+    public function execute(array $data): array
     {
-        $product = new ProductEntity();
-        $product->setName($data['name']);
-        $product->setDescription($data['description']);
-        $product->setPrice($data['price']);
-        $product->setExpirationDt($data['expiration_dt']);
-        $product->setImage($this->imageStorageUseCase->execute($data['image']));
-        $product->setCategory(
-            $this->categoryRepository->findById($data['categoryId'])
-        );
-        $this->productRepository->save($product);
-        return $product;
+        try{
+            $product = new ProductEntity();
+            $product->setName($data['name']);
+            $product->setDescription($data['description']);
+            $product->setPrice($data['price']);
+            $product->setExpirationDt($data['expiration_dt']);
+            $product->setImage($this->imageStorageUseCase->execute($data['image']));
+            $product->setCategory(
+                $this->categoryRepository->findById($data['categoryId'])
+            );
+            $this->productRepository->save($product);
+            return ['isSuccess' => true, 'message' => "Object created successfully." ];
+        } catch (\Exception $e) {
+            return ['isSuccess' => false, 'message' => $e->getMessage()];
+        }
     }
     
 }

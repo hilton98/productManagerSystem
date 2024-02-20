@@ -26,7 +26,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function findById(int $id): ?CategoryEntity
     {
         $categoryMapper = new CategoryMapper();
-        $itemQueried = Category::find($id);
+        $itemQueried = Category::findOrFail($id);
         if ($itemQueried)
             return $categoryMapper->modelToEntity($itemQueried);
         return null;

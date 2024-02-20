@@ -15,12 +15,16 @@ class CreateCategoryUseCase implements CreateCategoryUseCaseInterface
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function execute(array $data): CategoryEntity
+    public function execute(array $data): array
     {
-        $category = new CategoryEntity();
-        $category->setName($data['name']);
-        $this->categoryRepository->save($category);
-        return $category;
+        try{
+            $category = new CategoryEntity();
+            $category->setName($data['name']);
+            $this->categoryRepository->save($category);
+            return ['isSuccess' => true, 'message' => "Object created successfully." ];
+        } catch (\Exception $e) {
+            return ['isSuccess' => false, 'message' => $e->getMessage()];
+        }
     }
     
 }

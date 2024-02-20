@@ -5,5 +5,5 @@ use App\Domain\Entities\CategoryEntity;
 
 interface CreateCategoryUseCaseInterface
 {
-    public function execute(array $data): CategoryEntity;
+    public function execute(array $data): array;
 }

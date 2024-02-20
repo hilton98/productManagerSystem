@@ -5,5 +5,5 @@ use App\Domain\Entities\ProductEntity;
 
 interface CreateProductUseCaseInterface
 {
-    public function execute(array $data): ProductEntity;
+    public function execute(array $data): array;
 }
