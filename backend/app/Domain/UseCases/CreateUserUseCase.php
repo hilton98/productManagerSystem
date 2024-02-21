@@ -18,7 +18,7 @@ class CreateUserUseCase implements CreateUserUseCaseInterface
     {
         try{
             $user = new UserEntity();
-            $user->setName($data['email']);
+            $user->setName($data['name']);
             $user->setEmail($data['email']);
             $user->setPassword(bcrypt($data['password']));
             $this->userRepository->save($user);
