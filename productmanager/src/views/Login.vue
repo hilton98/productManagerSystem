@@ -1,6 +1,6 @@
 
 <template>
-    <div class="home">
+    <div class="login">
       <FormLogin msg="Welcome to Your Vue.js + TypeScript App"/>
     </div>
   </template>
@@ -10,7 +10,7 @@
   import FormLogin from '@/components/FormLogin.vue'; // @ is an alias to /src
   
   export default defineComponent({
-    name: 'HomeView',
+    name: 'LoginView',
     components: {
       FormLogin,
     },

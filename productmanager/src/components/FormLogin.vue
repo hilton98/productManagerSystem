@@ -1,16 +1,22 @@
 <template>
-    <div v-if="showMessage" class="alert alert-danger" role="alert">{{message}}</div>
+    <div v-if="showMessage" class="z-3 position-absolute p-1 alert alert-danger w-100" role="alert">{{message}}</div>
     <div class="d-flex justify-content-center">
         <form class=" w-50 p-4" @submit.prevent="submit">
             <div class="form-group p-2">
-                <label for="exampleInputEmail1">Endereço de email</label>
-                <input v-model="postData.email" required type="email" class="form-control" placeholder="Fulanotal@gmail.com">
+                <label for="EmailLogin">Email</label>
+                <input v-model="postData.email" required type="email" class="form-control" id="EmailLogin" placeholder="Fulanotal@gmail.com">
             </div>
             <div class="form-group p-2">
-                <label for="exampleInputPassword1">Definir senha</label>
-                <input v-model="postData.password" required type="password" class="form-control" id="exampleInputPassword1" placeholder="Senha Definitiva">
+                <label for="passLogin">Senha de acesso</label>
+                <input v-model="postData.password" required type="password" class="form-control" id="passLogin" placeholder="Senha">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">
+                <div v-if="!showLoading">Entrar</div>
+                <div  v-if="showLoading" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                    </div>
+                </div>
+            </button>
         </form>
     </div>
 </template>
@@ -32,6 +38,7 @@
     },
     data(){
         return {
+            showLoading: false,
             showMessage: false,
             message: '',
             postData : {
@@ -42,17 +49,19 @@
     },
     methods: {
         async submit() {
+            this.showLoading = true;
             try {
                 const response = await apiService.post<ReponseData>('api/login', this.postData);                
                 console.log(response);
             } catch (error) {
-                this.message = 'Erro ao submeter dados de criação';
+                this.message = 'Erro ao submeter dados de criação!';
                 this.showMessage = true;
                 setTimeout(() => {
                     this.showMessage = false;
-                }, 1500);
+                }, 2000);
                 console.error('Erro ao realizar o registro:', error);
             }
+            this.showLoading = false;
         }
   },
   });
