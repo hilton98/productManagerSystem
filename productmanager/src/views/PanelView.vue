@@ -1,56 +1,31 @@
 
 <template>
-  <div class="container">
-    <div class="row">
-        <div v-for="(product, index) in products" :key="index" class="col p-2">
-          <CardProduct
-            :name=product.name
-            :description=product.description
-            :price=product.price.toString()
-            :image_url=product.image
-            :expiration_dt=product.expiration_dt 
-          />
-        </div>
+  <div class="d-flex justify-content-center w-100">
+    <div class="w-50">
+      <input class="form-control mr-sm-2" v-model="serachText" type="search" placeholder="Search" aria-label="Search">
     </div>
   </div>
-
+  <div class="w-100 d-flex justify-content-center">
+    <div class="justify-content-center">
+      <PaginationCards
+        :queryParam=serachText
+      />
+    </div>
+  </div>
 </template>
   
 <script lang="ts">
+import PaginationCards from '@/components/PaginationCards.vue';
 import { defineComponent } from 'vue';
-import CardProduct from '@/components/CardProduct.vue';
-import apiService from '@/services/apiService';
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  expiration_dt: string;
-  image: string;
-}
 
 export default defineComponent({
-  name: 'LoginView',
+  name: 'PanelView',
   components: {
-    CardProduct,
+    PaginationCards,
   },
   data(){
     return {
-      products: [] as Product[],
-    }
-  },
-  created() {
-    this.getProducts();
-  },
-  methods: {
-    async getProducts() {
-      try {
-        const data = await apiService.get<Product[]>('product');
-        this.products = data;
-      } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-      }
+      serachText: '',
     }
   },
 });
