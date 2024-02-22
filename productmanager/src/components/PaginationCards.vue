@@ -32,7 +32,7 @@ export default defineComponent({
     queryParam: String,
   },
   components: {
-    CardProduct,
+    CardProduct
   },
   data(){
     return {
