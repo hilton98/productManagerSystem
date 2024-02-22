@@ -2,29 +2,17 @@
     <div class="d-flex flex-wrap">
       <div v-for="(product, index) in consultProducts(products)" :key="index" class="p-2">
         <CardProduct
-          :name=product.name
-          :description=product.description
-          :price=product.price.toString()
-          :image_url=product.image
-          :expiration_dt=product.expiration_dt 
+          :product="product" 
         />
       </div>
     </div>
 </template>
   
 <script lang="ts">
+import { Product } from '@/types';
 import { defineComponent } from 'vue';
 import CardProduct from '@/components/CardProduct.vue';
 import apiService from '@/services/apiService';
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  expiration_dt: string;
-  image: string;
-}
 
 export default defineComponent({
   name: 'PaginationCards',
