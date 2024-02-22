@@ -1,5 +1,5 @@
 <template>
-    <UpdateProduct 
+    <SaveProduct 
         v-if="isOpenModalUpdate"
         :title=titleModal
         :callback=viewModal 
@@ -69,7 +69,7 @@
   
 <script lang="ts">
 import { Product } from '@/types';
-import UpdateProduct from '@/components/UpdateProduct.vue';
+import SaveProduct from '@/components/SaveProduct.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -81,7 +81,7 @@ export default defineComponent({
         },
     },
     components: {
-        UpdateProduct
+        SaveProduct
     },
     data() {
         return {

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import Register from '@/views/Register.vue';
 import Login from '@/views/Login.vue';
 import PanelView from '@/views/PanelView.vue';
@@ -11,7 +10,7 @@ const routes: Array<RouteRecordRaw> = [
     component: PanelView
   },
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: Login
   },
@@ -19,11 +18,6 @@ const routes: Array<RouteRecordRaw> = [
     path: '/register',
     name: 'register',
     component: Register
-  },
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
   },
   {
     path: '/about',

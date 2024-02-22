@@ -57,7 +57,7 @@ interface ReponseData {
 }
 
 export default defineComponent({
-  name: "UpdateProduct",
+  name: "SaveProduct",
   props: {
     title: {
       type: String,

@@ -15,7 +15,7 @@ import CardProduct from '@/components/CardProduct.vue';
 import apiService from '@/services/apiService';
 
 export default defineComponent({
-  name: 'PaginationCards',
+  name: 'DashboardCards',
   props: {
     queryParam: String,
   },
