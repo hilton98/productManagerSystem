@@ -61,6 +61,8 @@
 import { Product, Category } from '@/types';
 import { defineComponent, PropType, ref, onMounted } from 'vue';
 import apiService from '@/services/apiService';
+import { useRouter } from 'vue-router';
+
 
 interface ReponseData {
   "isSuccess": boolean,
@@ -120,9 +122,10 @@ export default defineComponent({
       this.postData.image = this.stringBase64;
       if (this.postData.id !== '') {
         await this.update();
-        return;
+      } else {
+        await this.create();
       }
-      await this.create();
+      this.goToDashboard();
     },
 
     async update() {
@@ -151,6 +154,7 @@ export default defineComponent({
     const file = ref(null);
     const stringBase64 = ref('');
     const categories = ref([] as Category[]);
+    const router = useRouter();
 
     const handleFileUpload = async () => {
       const files = file.value ? file.value['files'] : null;
@@ -170,9 +174,15 @@ export default defineComponent({
         console.error('Erro ao buscar dados:', error);
       }
     };
+
+    const goToDashboard = () => {
+      router.replace('/dashboard');
+    };
+
     onMounted(getCategories);
     return {
       handleFileUpload,
+      goToDashboard,
       file,
       stringBase64,
       categories

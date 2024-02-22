@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-wrap">
+  <div class="d-flex flex-wrap justify-content-center p-4">
     <div v-for="(product, index) in consultProducts(products)" :key="index" class="p-2">
       <CardProduct :product="product" />
     </div>
@@ -21,7 +21,6 @@ export default defineComponent({
     CardProduct
   },
   methods: {
-
     consultProducts(products: Product[]) {
       const lowercaseQueryParam = this.queryParam ? this.queryParam.toLowerCase() : '';
       return products.filter((product) => {
@@ -35,7 +34,7 @@ export default defineComponent({
   setup() {
     const products = ref([] as Product[]);
 
-    const getCategories = async () => {
+    const getProducts = async () => {
       try {
         const data = await apiService.get<Product[]>('product');
         products.value = data;
@@ -43,8 +42,7 @@ export default defineComponent({
         console.error('Erro ao buscar dados:', error);
       }
     };
-    onMounted(getCategories);
-    onUpdated(getCategories);
+    onMounted(getProducts);
     return {
       products
     }

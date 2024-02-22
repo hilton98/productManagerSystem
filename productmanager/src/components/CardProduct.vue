@@ -2,16 +2,18 @@
     <SaveProduct v-if="isOpenModalUpdate" :title=titleModal :callback=viewModal :product=product />
     <DeleteModal v-if="isOpenPopup" title="Deletar produto" :callback="confirmDeletion" :productId="product.id"
         :message="warningMessage" />
-    <div class="card p-2" style="width: 250px;">
-        <img class="card-img-top" :src=product.image alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Descrição</h5>
-            <p class="card-text">{{ product.description }}</p>
+    <div class="card" style="width: 250px;">
+        <div class="default-image p-2">
+            <img class="card-img-top" :src=product.image alt="Card image cap">
+        </div>
+        <div class="card-body" style="height: 100px;">
+            <p class="card-text"><span style="font-weight: bold">Descrição: </span>{{ product.description }}</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Nome: {{ product.name }}</li>
-            <li class="list-group-item">Preço: {{ product.price }}</li>
-            <li class="list-group-item">Validade: {{ product.expiration_dt }}</li>
+            <li class="list-group-item text-truncate"><span style="font-weight: bold">Nome:</span> {{ product.name }}</li>
+            <li class="list-group-item text-truncate"><span style="font-weight: bold">Preço:</span> {{ product.price }}</li>
+            <li class="list-group-item text-truncate"><span style="font-weight: bold">Validade:</span> {{
+                product.expiration_dt }}</li>
         </ul>
         <div class="d-flex justify-content-between card-body">
             <div>
@@ -103,5 +105,17 @@ export default defineComponent({
 });
 </script>
   
-<style scoped></style>
+<style scoped>
+.default-image {
+    width: 250px;
+    height: 200px;
+    overflow: hidden;
+}
+
+.default-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>
   

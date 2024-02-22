@@ -1,10 +1,19 @@
 
 <template>
   <SaveProduct v-if="isOpenModalUpdate" :title=titleModal :callback=viewModal />
-  <button @click="viewModal(true)" class="btn btn-outline-primary">Criar Produto</button>
-  <div class="d-flex justify-content-center">
-    <div class="w-75">
-      <input class="form-control mr-sm-2" v-model="serachText" type="search" placeholder="Search" aria-label="Search">
+
+  <div class="">
+
+    <div class="d-flex justify-content-evenly">
+      <div>
+        <input class="form-control mr-sm-2" v-model="serachText" type="search" placeholder="Search" aria-label="Search">
+      </div>
+      <div>
+        <button @click="viewModal(true)" class="btn btn-outline-primary">Criar Produto</button>
+      </div>
+    </div>
+
+    <div>
       <DashboardCards :queryParam=serachText />
     </div>
   </div>
