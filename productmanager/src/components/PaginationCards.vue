@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-content-center flex-wrap">
+    <div class="d-flex flex-wrap">
       <div v-for="(product, index) in consultProducts(products)" :key="index" class="p-2">
         <CardProduct
           :name=product.name
