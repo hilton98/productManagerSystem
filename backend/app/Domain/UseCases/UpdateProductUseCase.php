@@ -1,6 +1,7 @@
 <?php 
 
 namespace App\Domain\UseCases;
+use App\Domain\UseCases\ImageStorageUseCase;
 use App\Domain\Repositories\ProductRepositoryInterface;
 use App\Domain\Repositories\CategoryRepositoryInterface;
 use App\Domain\UseCases\Interfaces\UpdateProductUseCaseInterface;
@@ -10,14 +11,17 @@ class UpdateProductUseCase implements UpdateProductUseCaseInterface
 {
     private $productRepository;
     private $categoryRepository;
+    private $imageStorageUseCase;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryRepositoryInterface $categoryRepository,
+        ImageStorageUseCase $imageStorageUseCase
     )
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->imageStorageUseCase = $imageStorageUseCase;
     }
 
     public function execute(int $productId, array $data): array
@@ -31,7 +35,11 @@ class UpdateProductUseCase implements UpdateProductUseCaseInterface
             $product->setDescription($this->assignValue($data, 'description', $product->getDescription()));
             $product->setPrice($this->assignValue($data, 'price', $product->getPrice()));
             $product->setExpirationDt($this->assignValue($data, 'expiration_dt', $product->getExpirationDt()));
-            $product->setImage($this->assignValue($data, 'image', $product->getImage()));
+            $product->setImage(
+                $this->imageStorageUseCase->execute(
+                    $this->assignValue($data, 'image', $product->getImage())
+                )
+            );
             $product->setCategory($this->assignCategory($data, 'categoryId', $product->getCategory()));
             $product->setUpdatedAt(now());
             $this->productRepository->save($product);    
