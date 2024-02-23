@@ -8,7 +8,7 @@
   
 <script lang="ts">
 import { Product } from '@/types';
-import { defineComponent, ref, onUpdated, onMounted } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import CardProduct from '@/components/CardProduct.vue';
 import apiService from '@/services/apiService';
 
