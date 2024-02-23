@@ -17,7 +17,7 @@ class GetAllCategoriesUseCase implements GetAllCategoriesUseCaseInterface
     {
         $data = $this->categoryRepository->findAll();
         if (!$data)
-            throw new \Exception('No categories registered!');
+            return [];
         return $data;
     }   
 }

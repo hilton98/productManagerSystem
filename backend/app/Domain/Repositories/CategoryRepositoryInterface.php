@@ -19,6 +19,11 @@ interface CategoryRepositoryInterface
      * @return void
     */
     public function save(CategoryEntity $data);
+
+    /**
+     * @return CategoryEntity
+    */
+    public function create(string $name); 
     
     /**
      * @return bool

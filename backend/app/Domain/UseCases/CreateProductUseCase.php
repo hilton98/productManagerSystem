@@ -14,24 +14,28 @@ class CreateProductUseCase implements CreateProductUseCaseInterface
     private $productRepository;
     private $categoryRepository;
     private $imageStorageUseCase;
-    private $stockRepositoryInterface;
+    private $stockRepository;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
         ImageStorageUseCase $imageStorageUseCase,
-        StockRepositoryInterface $stockRepositoryInterface
+        StockRepositoryInterface $stockRepository
     )
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->imageStorageUseCase = $imageStorageUseCase;
-        $this->stockRepositoryInterface = $stockRepositoryInterface;
+        $this->stockRepository = $stockRepository;
     }
 
     public function execute(array $data, int $userId): array
     {
         try{
+            if ($data['newCategory']) {
+                $categoryCreated = $this->categoryRepository->create($data['newCategory']);
+                $data['categoryId'] = $categoryCreated->getId();             
+            }
             $product = new ProductEntity();
             $product->setName($data['name']);
             $product->setDescription($data['description']);
@@ -41,8 +45,8 @@ class CreateProductUseCase implements CreateProductUseCaseInterface
             $product->setCategory(
                 $this->categoryRepository->findById($data['categoryId'])
             );
-            $productSaved = $this->productRepository->create($product);            
-            $this->stockRepositoryInterface->save($userId, $productSaved->getId());
+            $productSaved = $this->productRepository->create($product);
+            $this->stockRepository->save($userId, $productSaved->getId());
             return ['isSuccess' => true, 'message' => "Object created successfully." ];
         } catch (\Exception $e) {
             return ['isSuccess' => false, 'message' => $e->getMessage()];

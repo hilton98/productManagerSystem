@@ -20,13 +20,14 @@ class GetStockUseCase implements GetStockUseCaseInterface
 
     public function execute(int $userId): array
     {
-        $stock = $this->stockRepository->findByUserId($userId);
-        if (!$stock)
-            throw new \Exception('Stock is empty!');
+      $stock = $this->stockRepository->findByUserId($userId);
+      if ($stock){
         $products = array();
         foreach ($stock as &$item){
           $products[] = $this->productRepository->findById($item->product_id)->toArray();
         }
         return $products;
+      }
+      return [];
     }   
 }

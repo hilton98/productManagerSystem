@@ -20,7 +20,7 @@ class CategoryRepository implements CategoryRepositoryInterface
             }
             return $categories;             
         }
-        return null;
+        return [];
     }
 
     public function findById(int $id): ?CategoryEntity
@@ -48,6 +48,20 @@ class CategoryRepository implements CategoryRepositoryInterface
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+        }
+    }
+
+    public function create(string $name): CategoryEntity 
+    {
+        try {
+            $model = Category::create([
+                'name' => $name,
+            ]);
+            $categoryMapper = new CategoryMapper();
+            return $categoryMapper->modelToEntity($model);
+        } catch (\Exception $e) {
+            \Log::error('Error registering product: ' . $e->getMessage());
+            throw new \Exception('Error registering product: ' . $e->getMessage(), $e->getCode(), $e);
         }
     }
 

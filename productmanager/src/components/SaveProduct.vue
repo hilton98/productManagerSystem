@@ -11,47 +11,58 @@
           <div class="modal-body">
             <div class="mb-3">
               <label for="name" class="form-label">Nome</label>
-              <input v-model="postData.name" type="text" class="form-control" id="name">
+              <input v-model="postData.name" required type="text" class="form-control" id="name">
             </div>
 
             <div class="mb-3">
               <label for="description" class="form-label">Descrição</label>
-              <input v-model="postData.description" type="text" class="form-control" id="description">
+              <input v-model="postData.description" required type="text" class="form-control" id="description">
             </div>
 
             <div class="mb-3">
               <label for="price" class="form-label">Preço</label>
-              <input v-model="postData.price" type="number" class="form-control" id="price">
+              <input v-model="postData.price" required type="number" class="form-control" id="price">
             </div>
 
             <div class="mb-3">
               <label for="senha" class="form-label">Data validade</label>
-              <input v-model="postData.expiration_dt" type="date" class="form-control" id="senha">
+              <input v-model="postData.expiration_dt" required type="date" class="form-control" id="senha">
             </div>
 
             <div class="input-group mb-3">
               <label for="image">Selecione a imagem</label>
-              <input type="file" ref="file" v-on:change="handleFileUpload()" accept="image/*" id="image">
+              <input type="file" ref="file" required v-on:change="handleFileUpload()" accept="image/*" id="image">
             </div>
 
-            <div class="dropdown">
-              <h4>Selecione a categoria</h4>
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ categories.find((element) => element.id == postData.categoryId)?.name }}
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" v-for="(category, index) in categories" :key="index"
-                  @click="handleActionClick(category.id)">{{ category.name }}</a>
+            <div class="d-flex gap-3">
+              <div>
+                <label for="newCategory" class="form-label">Crie categoria</label>
+                <input v-model="postData.newCategory" required type="text" class="form-control"
+                  placeholder="Nome categoria" id="newCategory">
               </div>
 
+              <div class="dropdown">
+                <label for="dropdownMenuButton" class="form-label">Selecione categoria</label>
+                <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton"
+                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ categories.find((element) => element.id == postData.categoryId)?.name }}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" v-for="(category, index) in categories" :key="index"
+                    @click="handleActionClick(category.id)">{{ category.name }}</a>
+                </div>
+              </div>
             </div>
+          </div>
 
-          </div>
+
           <div class="modal-footer">
-            <button @click="save" type="button" class="btn btn-primary">Salvar</button>
+            <button @click="submit" class="btn btn-primary">Salvar</button>
           </div>
+
         </div>
+
+
       </div>
     </div>
   </div>
@@ -99,7 +110,8 @@ export default defineComponent({
         price: (this.product ? this.product.price : 0.0),
         expiration_dt: this.product ? this.product.expiration_dt : '',
         image: this.product ? this.product.image : '',
-        categoryId: this.product ? this.product.category.id : 0
+        categoryId: this.product ? this.product.category.id : 0,
+        newCategory: ''
       }
     };
   },
@@ -121,13 +133,14 @@ export default defineComponent({
       }
     },
 
-    async save() {
+    async submit() {
       this.postData.image = this.stringBase64;
       if (this.postData.id !== '') {
         await this.update();
       } else {
         await this.create();
       }
+      this.callback(false);
       this.goToDashboard();
     },
 

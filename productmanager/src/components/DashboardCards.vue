@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex flex-wrap justify-content-center p-4">
+    <h1 v-if="products.length < 1">Sem produtos cadastrados!</h1>
     <div v-for="(product, index) in consultProducts(products)" :key="index" class="p-2">
       <CardProduct :product="product" />
     </div>
@@ -12,8 +13,6 @@ import { defineComponent, ref, onMounted } from 'vue';
 import CardProduct from '@/components/CardProduct.vue';
 import apiService from '@/services/apiService';
 import Cookies from 'js-cookie';
-
-
 const CREDENTIAL = Cookies.get(process.env.VUE_APP_TOKEN_API);
 
 export default defineComponent({
@@ -24,14 +23,21 @@ export default defineComponent({
   components: {
     CardProduct
   },
+  data() {
+    return {
+      noResultsSearch: false
+    }
+
+  },
   methods: {
     consultProducts(products: Product[]) {
       const lowercaseQueryParam = this.queryParam ? this.queryParam.toLowerCase() : '';
-      return products.filter((product) => {
+      const result = products.filter((product) => {
         const lowercaseName = product.name.toLowerCase();
         const lowercaseDescription = product.description.toLowerCase();
         return lowercaseName.includes(lowercaseQueryParam) || lowercaseDescription.includes(lowercaseQueryParam);
       });
+      return result;
     },
   },
 
@@ -41,7 +47,11 @@ export default defineComponent({
     const getProducts = async () => {
       try {
         const data = await apiService.get<Product[]>('stock', CREDENTIAL);
-        products.value = data;
+        if (data) {
+          products.value = data;
+        } else {
+          products.value = [];
+        }
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
       }

@@ -12,8 +12,8 @@ class StockRepository implements StockRepositoryInterface
     $itemsQueried = Stock::join('products', 'stocks.product_id', '=', 'products.id')
     ->where('stocks.user_id', $userId)
     ->select('stocks.*', 'products.name as product_name', 'products.price')
-    ->get();    
-    if($itemsQueried){
+    ->get();
+    if($itemsQueried->count() > 0){
       #TODO Create mapper to stock 
       return $itemsQueried;
     }
