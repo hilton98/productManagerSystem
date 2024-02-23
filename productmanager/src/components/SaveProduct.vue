@@ -70,7 +70,7 @@
   
 <script lang="ts">
 import { Product, Category } from '@/types';
-import { defineComponent, PropType, ref, onMounted } from 'vue';
+import { defineComponent, PropType, ref, onMounted, onUpdated } from 'vue';
 import apiService from '@/services/apiService';
 import { useRouter } from 'vue-router';
 import Cookies from 'js-cookie';
@@ -200,7 +200,8 @@ export default defineComponent({
     };
 
     const goToDashboard = () => {
-      router.replace('/dashboard');
+      const uniqueParam = `t=${Date.now()}`;
+      router.replace({ name: 'dashboard', query: { uniqueParam } });
     };
 
     onMounted(getCategories);

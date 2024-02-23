@@ -71,7 +71,8 @@ export default defineComponent({
     const router = useRouter();
 
     const goToDashboard = () => {
-      router.replace('/dashboard');
+      const products = `t=${Date.now()}`;
+      router.replace({ name: 'dashboard', query: { products } });
     };
 
     return {

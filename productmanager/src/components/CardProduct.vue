@@ -4,7 +4,7 @@
         :message="warningMessage" />
     <div class="card" style="width: 250px;">
         <div class="default-image p-2">
-            <img class="card-img-top" :src=product.image alt="Card image cap">
+            <img class="card-img-top" :src="`${baseUrlImage}/images/${product.image}`" alt="Card image cap">
         </div>
         <div class="card-body" style="height: 100px;">
             <p class="card-text"><span style="font-weight: bold">Descrição: </span>{{ product.description }}</p>
@@ -88,6 +88,7 @@ export default defineComponent({
     },
     data() {
         return {
+            baseUrlImage: process.env.VUE_APP_BASE_URL,
             warningMessage: "Você tem certeza que deseja prosseguir? Os dados serão deletados e não poderão ser recuperados.",
             titleModal: "Atualizar dados do Produto",
             isOpenModalUpdate: false,

@@ -1,4 +1,5 @@
 <template>
+    <h1>Login</h1>
     <div v-if="showMessage" class="z-3 position-absolute p-1 alert alert-danger w-100" role="alert">{{ message }}</div>
     <div class="d-flex justify-content-center">
         <form class=" w-50 p-4" @submit.prevent="submit">
@@ -12,13 +13,30 @@
                 <input v-model="postData.password" required type="password" class="form-control" id="passLogin"
                     placeholder="Senha">
             </div>
-            <button type="submit" class="btn btn-primary">
-                <div v-if="!showLoading">Entrar</div>
-                <div v-if="showLoading" class="d-flex justify-content-center">
-                    <div class="spinner-border" role="status">
-                    </div>
+
+            <div>
+                <div class="p-2">
+                    <button type="submit" class="btn btn-primary">
+                        <div v-if="!showLoading">Entrar</div>
+                        <div v-if="showLoading" class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                            </div>
+                        </div>
+                    </button>
                 </div>
-            </button>
+
+                <div class="p-2">
+                    <button @click="goToRegister" class="btn btn-primary">
+                        <div v-if="!showLoading">Registrar-se</div>
+                        <div v-if="showLoading" class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+
         </form>
     </div>
 </template>
@@ -75,8 +93,13 @@ export default defineComponent({
         const goToDashboard = () => {
             router.replace('/dashboard');
         };
+
+        const goToRegister = () => {
+            router.replace('/register');
+        };
         return {
             goToDashboard,
+            goToRegister
         };
     },
 });

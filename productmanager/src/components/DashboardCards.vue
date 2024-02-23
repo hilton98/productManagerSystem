@@ -9,7 +9,7 @@
   
 <script lang="ts">
 import { Product } from '@/types';
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, onUpdated } from 'vue';
 import CardProduct from '@/components/CardProduct.vue';
 import apiService from '@/services/apiService';
 import Cookies from 'js-cookie';
@@ -32,12 +32,14 @@ export default defineComponent({
   methods: {
     consultProducts(products: Product[]) {
       const lowercaseQueryParam = this.queryParam ? this.queryParam.toLowerCase() : '';
-      const result = products.filter((product) => {
-        const lowercaseName = product.name.toLowerCase();
-        const lowercaseDescription = product.description.toLowerCase();
-        return lowercaseName.includes(lowercaseQueryParam) || lowercaseDescription.includes(lowercaseQueryParam);
-      });
-      return result;
+      if (products) {
+        const result = products.filter((product) => {
+          const lowercaseName = product.name.toLowerCase();
+          const lowercaseDescription = product.description.toLowerCase();
+          return lowercaseName.includes(lowercaseQueryParam) || lowercaseDescription.includes(lowercaseQueryParam);
+        });
+        return result;
+      }
     },
   },
 
@@ -57,6 +59,7 @@ export default defineComponent({
       }
     };
     onMounted(getProducts);
+    onUpdated(getProducts);
     return {
       products
     }
