@@ -9,7 +9,7 @@
   
 <script lang="ts">
 import { Product } from '@/types';
-import { defineComponent, ref, onMounted, onUpdated } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import CardProduct from '@/components/CardProduct.vue';
 import apiService from '@/services/apiService';
 import Cookies from 'js-cookie';
@@ -59,7 +59,6 @@ export default defineComponent({
       }
     };
     onMounted(getProducts);
-    onUpdated(getProducts);
     return {
       products
     }

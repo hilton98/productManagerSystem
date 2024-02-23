@@ -91,7 +91,8 @@ export default defineComponent({
     setup() {
         const router = useRouter();
         const goToDashboard = () => {
-            router.replace('/dashboard');
+            window.location.reload();
+            //router.replace('/dashboard');
         };
 
         const goToRegister = () => {

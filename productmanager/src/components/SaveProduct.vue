@@ -140,8 +140,8 @@ export default defineComponent({
       } else {
         await this.create();
       }
-      this.callback(false);
       this.goToDashboard();
+      this.callback(false);
     },
 
     async update() {
@@ -200,8 +200,8 @@ export default defineComponent({
     };
 
     const goToDashboard = () => {
-      const uniqueParam = `t=${Date.now()}`;
-      router.replace({ name: 'dashboard', query: { uniqueParam } });
+      window.location.reload();
+      //router.replace('/dashboard');
     };
 
     onMounted(getCategories);
