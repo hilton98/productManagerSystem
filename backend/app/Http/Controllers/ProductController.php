@@ -72,9 +72,6 @@ class ProductController extends Controller
 
     public function getItemById(int $id)
     {
-        $user = Auth::user();
-        if(!$user)
-            return response()->json(['error' => 'No authorization to update data'], 401);
 
         try {
             $product = $this->getProductUseCase->execute($id);
@@ -86,10 +83,6 @@ class ProductController extends Controller
 
     public function getAllItems()
     {
-        $user = Auth::user();
-        if(!$user)
-            return response()->json(['error' => 'No authorization to update data'], 401);
-        
         try {
             $products = json_encode($this->getAllProductsUseCase->execute());
             return response($products);
