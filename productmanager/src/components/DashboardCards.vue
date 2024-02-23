@@ -11,6 +11,10 @@ import { Product } from '@/types';
 import { defineComponent, ref, onMounted } from 'vue';
 import CardProduct from '@/components/CardProduct.vue';
 import apiService from '@/services/apiService';
+import Cookies from 'js-cookie';
+
+
+const CREDENTIAL = Cookies.get(process.env.VUE_APP_TOKEN_API);
 
 export default defineComponent({
   name: 'DashboardCards',
@@ -36,7 +40,7 @@ export default defineComponent({
 
     const getProducts = async () => {
       try {
-        const data = await apiService.get<Product[]>('product');
+        const data = await apiService.get<Product[]>('stock', CREDENTIAL);
         products.value = data;
       } catch (error) {
         console.error('Erro ao buscar dados:', error);

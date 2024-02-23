@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,8 @@ Route::get('/product/{id}', [ProductController::class, 'getItemById']);
 Route::get('/product', [ProductController::class, 'getAllItems']);
 Route::delete('/product/{id}', [ProductController::class, 'delete']);
 Route::put('/product/{id}', [ProductController::class, 'update']);
+
+Route::get('/stock', [StockController::class, 'getStock']);
 
 Route::post('/user', [UserController::class, 'create']);
 
