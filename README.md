@@ -4,7 +4,6 @@
 Clonar o repositório, selecionar a branch main e configurar o backend com os comandos:
 ```
 cd backend
-composer update
 composer install
 docker-compose up -d
 ```
