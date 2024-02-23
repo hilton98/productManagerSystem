@@ -76,10 +76,8 @@ class ProductRepository implements ProductRepositoryInterface
     public function delete(int $id): bool
     {
         try{
-            DB::beginTransaction();
             $itemQueried = Product::findOrFail($id);
             $itemQueried->delete();
-            DB::commit();
             return true;
         } catch (\Exception $e) {
             DB::rollBack();

@@ -60,19 +60,21 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         if(!$user)
-            return response()->json(['error' => 'No authorization to update data'], 401);
+            return response()->json(['message' => 'No user'], 401);
 
         try {
-            $product = $this->deleteProductUseCase->execute($id);
-            return response()->json(['success' => 'Product removed!'], 204);
+            $result = $this->deleteProductUseCase->execute($id, $user->id);
+            return response()->json(
+                ['message' => $result['message']],
+                $result['isSuccess'] ? 204 : 401
+            );
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 404);
+            return response()->json(['message' => $e->getMessage()], 404);
         }
     }
 
     public function getItemById(int $id)
     {
-
         try {
             $product = $this->getProductUseCase->execute($id);
             return response($product->toJson());

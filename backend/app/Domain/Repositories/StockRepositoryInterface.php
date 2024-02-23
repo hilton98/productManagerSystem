@@ -15,4 +15,9 @@ interface StockRepositoryInterface
     */
     public function save(int $userId, int $productId);
 
+    /**
+     * @return bool
+    */
+    public function delete(int $id);
+
 }

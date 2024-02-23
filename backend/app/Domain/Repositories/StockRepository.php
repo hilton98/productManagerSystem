@@ -32,4 +32,16 @@ class StockRepository implements StockRepositoryInterface
       throw new \Exception('Error registering stock: ' . $e->getMessage(), $e->getCode(), $e);       
     }
   }
+
+  public function delete(int $id): bool
+  {
+    try{
+      $itemQueried = Stock::where('product_id', $id)->firstOrFail();
+      $itemQueried->delete();
+      return true;
+    } catch (\Exception $e) {
+      return false;
+    }
+  }
+
 }

@@ -14,18 +14,21 @@ class UpdateProductUseCase implements UpdateProductUseCaseInterface
     private $categoryRepository;
     private $imageStorageUseCase;
     private $stockRepository;
+    private $validateOperation;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
         ImageStorageUseCase $imageStorageUseCase,
-        StockRepositoryInterface $stockRepository
+        StockRepositoryInterface $stockRepository,
+        ValidateOperationProductUseCase $validateOperationProductUseCase
     )
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->imageStorageUseCase = $imageStorageUseCase;
         $this->stockRepository = $stockRepository;
+        $this->validateOperation = $validateOperationProductUseCase;
     }
     
     public function execute(int $productId, int $userId, array $data): array
@@ -35,7 +38,7 @@ class UpdateProductUseCase implements UpdateProductUseCaseInterface
             if (!$product)
                 return ['isSuccess' => false, 'message' => 'Product not found.'];
 
-            if (!$this->validUser($productId, $userId))
+            if (!$this->validateOperation->execute($productId, $userId))
                 return ['isSuccess' => false, 'message' => 'No product in personal stock!'];
             
             $product->setName($this->assignValue($data, 'name', $product->getName()));
@@ -71,15 +74,5 @@ class UpdateProductUseCase implements UpdateProductUseCaseInterface
                 return $category;
         }
         return $data;
-    }
-
-    private function validUser($product_id, $userId)
-    {
-        $stock = $this->stockRepository->findByUserId($userId);
-        foreach ($stock as &$item){
-            if($item->product_id == $product_id)
-                return true;
-        }
-        return false;
     }
 }

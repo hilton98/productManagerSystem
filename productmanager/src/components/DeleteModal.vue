@@ -23,6 +23,8 @@
 import { defineComponent, PropType } from 'vue';
 import { useRouter } from 'vue-router';
 import apiService from '@/services/apiService';
+import Cookies from 'js-cookie';
+const CREDENTIAL = Cookies.get(process.env.VUE_APP_TOKEN_API);
 
 export default defineComponent({
   name: "SaveProduct",
@@ -53,7 +55,10 @@ export default defineComponent({
   methods: {
     async submit() {
       try {
-        const response = await apiService.delete<null>(`product/${this.productId}`);
+        const response = await apiService.delete<null>(
+          `product/${this.productId}`,
+          CREDENTIAL
+        );
         console.log(response);
       } catch (error) {
         console.error('Erro ao realizar o registro:', error);
