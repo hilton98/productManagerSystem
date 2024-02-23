@@ -3,6 +3,7 @@
 namespace App\Domain\Repositories;
 use App\Domain\Mappers\StockMapper;
 use App\Models\Stock;
+use Illuminate\Support\Facades\Log;
 
 class StockRepository implements StockRepositoryInterface
 {
@@ -17,5 +18,18 @@ class StockRepository implements StockRepositoryInterface
       return $itemsQueried;
     }
     return null;
+  }
+
+  public function save(int $userId, int $productId)
+  {
+    try {
+      $model = new Stock;
+      $model->user_id = $userId;
+      $model->product_id = $productId;
+      $model->save();
+    } catch (\Exception $e) {
+      \Log::error('Error registering stock: ' . $e->getMessage());
+      throw new \Exception('Error registering stock: ' . $e->getMessage(), $e->getCode(), $e);       
+    }
   }
 }

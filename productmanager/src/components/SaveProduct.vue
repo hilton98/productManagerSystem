@@ -62,6 +62,9 @@ import { Product, Category } from '@/types';
 import { defineComponent, PropType, ref, onMounted } from 'vue';
 import apiService from '@/services/apiService';
 import { useRouter } from 'vue-router';
+import Cookies from 'js-cookie';
+
+const CREDENTIAL = Cookies.get(process.env.VUE_APP_TOKEN_API);
 
 
 interface ReponseData {
@@ -130,7 +133,11 @@ export default defineComponent({
 
     async update() {
       try {
-        const response = await apiService.put<ReponseData>(`product/${this.postData.id}`, this.postData);
+        const response = await apiService.put<ReponseData>(
+          `product/${this.postData.id}`,
+          this.postData,
+          CREDENTIAL
+        );
         console.log(response);
         return;
       } catch (error) {
@@ -141,7 +148,11 @@ export default defineComponent({
 
     async create() {
       try {
-        const response = await apiService.post<ReponseData>('product', this.postData);
+        const response = await apiService.post<ReponseData>(
+          'product',
+          this.postData,
+          CREDENTIAL
+        );
         console.log(response);
         return;
       } catch (error) {

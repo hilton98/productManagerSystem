@@ -16,6 +16,11 @@ interface ProductRepositoryInterface
     public function findById(int $id);
 
     /**
+     * @return ProductEntity
+    */
+    public function create(ProductEntity $data);
+
+    /**
      * @return void
     */
     public function save(ProductEntity $data);

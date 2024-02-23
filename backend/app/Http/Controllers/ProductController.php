@@ -39,7 +39,7 @@ class ProductController extends Controller
             return response()->json(['error' => 'No authorization to update data'], 401);
 
         $formData = $request->json()->all();
-        $result = $this->updateProductUseCase->execute($id, $formData);
+        $result = $this->updateProductUseCase->execute($id, $user->id, $formData);
         return response()->json($result, $result['isSuccess'] ? 200 : 400);
     }
 
@@ -47,9 +47,9 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         if(!$user)
-            return response()->json(['error' => 'No authorization to update data'], 401);
+            return response()->json(['error' => 'No user!'], 401);
 
-        $result = $this->createProductUseCase->execute($request->json()->all());
+        $result = $this->createProductUseCase->execute($request->json()->all(), $user->id);
         if ($result['isSuccess'])
             return response()->json(['success' => $result['message']], 201);
 

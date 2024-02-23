@@ -10,4 +10,9 @@ interface StockRepositoryInterface
     */
     public function findByUserId(int $userId);
 
+    /**
+     * @return void
+    */
+    public function save(int $userId, int $productId);
+
 }
