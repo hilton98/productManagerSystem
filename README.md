@@ -10,22 +10,34 @@ Sistema de arquitetura REST, sendo a API desenvolvida com laravel 10 e o fronten
 2. selecionar a branch develop: `git checkout develop`
 3. criar um `.env` com os dados do arquivo `.env.example`
 
-4. Configurar o backend com os comandos:
+### 4. Configurar o `backend` com os comandos:
 ```
 cd backend
 composer install
 docker-compose up -d
 ```
+6. Executar as migrações com o comando:
+```
+./vendor/bin/sail artisan migrate
 
-Configurar o frontend com os comandos:
+```
+
+### 7. Configurar o `frontend` com os comandos:
 ```
 cd productmanager
 npm i
 ```
 
-Executar o frontend:
+8. Executar o frontend:
 ```
 npm run serve
 ```
 
-obs: Em breve add o docker para automatizar a instalação :)
+obs: Em breve add o docker para automatizar a instalação... sorry :)
+
+# Esquema banco de dados
+- Inicialmente foram pensadas em 3 entidades: Product, Category e Stock. 
+- Por padrão todo produto tem relação com alguma categoria. Inicialmente a entidade Stock tem vínculo com o usuário e com o produto, fazendo com que o usuário possua seu estoque de produtos.
+- O Stock deve evoluir futuramente ao add novas colunas que indicam quantidades e entre outras informações pertinentes. 
+- Ao deletar um produto, o produto é deletado do Stock e não literalmente o produto.
+- As categorias são compartilhadas por todos, ao serem criadas não são vinculadas ao usuário.
