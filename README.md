@@ -55,5 +55,11 @@ obs: Em breve add o docker para automatizar a instalação... sorry :)
 - Ao deletar um produto, o produto é deletado do Stock e não literalmente o produto.
 - As categorias são compartilhadas por todos, ao serem criadas não são vinculadas ao usuário.
 
+
+# Autenticação
+- Com o laravel, foi utilizado JWT, mais especificamente fazendo uso da ferramenta [JSON Web Token Authentication for Laravel & Lumen](https://jwt-auth.readthedocs.io/en/develop/). Após sua configuração, implementa-se o controller `AuthController`, responsável por recursos comuns como o login.
+- No frontend, utiliza-se [js-cookie](https://www.npmjs.com/package/js-cookie) para registrar o token em cookie. A ferramenta tem recursos que simplificam o gerenciamento de cookies, podendo criar cookies e definir um tempo de vida, remover e requisitar de forma rápida.
+- Com o cookie registrado com o token, o usuário fará a requisição autenticada tanto pelos itens de seu estoque quanto nas demais de suas ações como editar, deletar e criar. As categorias não são autenticadas.
+
 # Ambiente de desenvolvimento
 Windows 11 com  wsl 2: Ubuntu 22.04.3 LTS
