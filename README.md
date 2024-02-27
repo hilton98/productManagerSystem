@@ -46,8 +46,6 @@ npm i
 npm run serve
 ```
 
-obs: Em breve add o docker para automatizar a instalação... sorry :)
-
 # Esquema banco de dados
 - Inicialmente foram pensadas em 3 entidades: Product, Category e Stock. 
 - Por padrão todo produto tem relação com alguma categoria. Inicialmente a entidade Stock tem vínculo com o usuário e com o produto, fazendo com que o usuário possua seu estoque de produtos.
