@@ -8,7 +8,7 @@ Sistema de arquitetura REST, sendo a API desenvolvida com laravel 10 e o fronten
 
 1. Clonar o repositório
 2. selecionar a branch develop: `git checkout develop`
-3. criar um `.env` com os dados do arquivo `.env.example`
+3. No backend, utilizar o `.env.example` como o `.env`
 
 ### 4. (Opção 1) Instalação com docker:
 5. Utilizar o `.env.example` da raiz do projeto como `.env`
