@@ -9,7 +9,8 @@
           {{ message }}
         </div>
         <div class="modal-footer">
-          <button @click="callback(false)" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+          <button @click="callback(false)" type="button" class="btn btn-danger"
+            data-bs-dismiss="modal">Cancelar</button>
           <form @submit.prevent="submit">
             <button type="submit" class="btn btn-primary">Confirmar</button>
           </form>
@@ -18,13 +19,12 @@
     </div>
   </div>
 </template>
-  
+
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { useRouter } from 'vue-router';
 import apiService from '@/services/apiService';
 import Cookies from 'js-cookie';
-const CREDENTIAL = Cookies.get(process.env.VUE_APP_TOKEN_API);
+import { mapActions } from 'vuex';
 
 export default defineComponent({
   name: "SaveProduct",
@@ -57,33 +57,21 @@ export default defineComponent({
       try {
         const response = await apiService.delete<null>(
           `product/${this.productId}`,
-          CREDENTIAL
+          Cookies.get(process.env.VUE_APP_TOKEN_API)
         );
         console.log(response);
       } catch (error) {
         console.error('Erro ao realizar o registro:', error);
       }
       this.callback(false);
-      this.goToDashboard();
+      this.fetchProducts();
     },
-  },
-  setup() {
-    const router = useRouter();
-
-    const goToDashboard = () => {
-      window.location.reload();
-      // const products = `t=${Date.now()}`;
-      // router.replace({ name: 'dashboard', query: { products } });
-    };
-
-    return {
-      goToDashboard,
-    };
-  },
-
+    ...mapActions([
+      'fetchProducts'
+    ]),
+  }
 });
 
 </script>
-  
+
 <style scoped></style>
-  

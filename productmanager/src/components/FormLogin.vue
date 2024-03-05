@@ -27,9 +27,9 @@
 
                 <div class="p-2">
                     <button @click="goToRegister" class="btn btn-primary">
-                        <div v-if="!showLoading">Registrar-se</div>
-                        <div v-if="showLoading" class="d-flex justify-content-center">
-                            <div class="spinner-border" role="status">
+                        <div :disabled="showLoading">Registrar-se</div>
+                        <div class="d-flex justify-content-center">
+                            <div role="status">
                             </div>
                         </div>
                     </button>
@@ -40,7 +40,7 @@
         </form>
     </div>
 </template>
-  
+
 <script lang="ts">
 import Cookies from 'js-cookie';
 import { defineComponent } from 'vue';
@@ -74,9 +74,10 @@ export default defineComponent({
             this.showLoading = true;
             try {
                 const response = await apiService.post<ReponseData>('api/login', this.postData);
-                Cookies.set(process.env.VUE_APP_TOKEN_API, response.access_token, { expires: 1 });
-                this.goToDashboard();
-                console.log(response);
+                if (response.access_token) {
+                    Cookies.set(process.env.VUE_APP_TOKEN_API, response.access_token, { expires: 1 });
+                    this.goToDashboard();
+                }
             } catch (error) {
                 this.message = 'Erro ao submeter dados de criação!';
                 this.showMessage = true;
@@ -86,13 +87,12 @@ export default defineComponent({
                 console.error('Erro ao realizar o registro:', error);
             }
             this.showLoading = false;
-        }
+        },
     },
     setup() {
         const router = useRouter();
         const goToDashboard = () => {
-            window.location.reload();
-            //router.replace('/dashboard');
+            router.replace('/dashboard');
         };
 
         const goToRegister = () => {
@@ -105,6 +105,5 @@ export default defineComponent({
     },
 });
 </script>
-  
+
 <style scoped></style>
-  

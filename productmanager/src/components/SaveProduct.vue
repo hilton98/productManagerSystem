@@ -71,13 +71,10 @@
 
 <script lang="ts">
 import { Product, Category } from '@/types';
-import { defineComponent, PropType, ref, onMounted, onUpdated } from 'vue';
+import { mapActions } from 'vuex';
+import { defineComponent, PropType, ref, onMounted } from 'vue';
 import apiService from '@/services/apiService';
-import { useRouter } from 'vue-router';
 import Cookies from 'js-cookie';
-
-const CREDENTIAL = Cookies.get(process.env.VUE_APP_TOKEN_API);
-
 
 interface ReponseData {
   "isSuccess": boolean,
@@ -160,14 +157,16 @@ export default defineComponent({
     },
 
     async submit() {
-      this.postData.image = this.stringBase64;
+      if (this.stringBase64.length > 0) {
+        this.postData.image = this.stringBase64;
+      }
       this.postData.price = Number(this.removeMask(this.postData.price));
       if (this.postData.id !== '') {
         await this.update();
       } else {
         await this.create();
       }
-      this.goToDashboard();
+      this.fetchProducts();
       this.callback(false);
     },
 
@@ -176,7 +175,7 @@ export default defineComponent({
         const response = await apiService.put<ReponseData>(
           `product/${this.postData.id}`,
           this.postData,
-          CREDENTIAL
+          Cookies.get(process.env.VUE_APP_TOKEN_API)
         );
         console.log(response);
         return;
@@ -185,27 +184,28 @@ export default defineComponent({
       }
       this.closeModal();
     },
-
     async create() {
       try {
         const response = await apiService.post<ReponseData>(
           'product',
           this.postData,
-          CREDENTIAL
+          Cookies.get(process.env.VUE_APP_TOKEN_API)
         );
         console.log(response);
         return;
       } catch (error) {
         console.error('Erro ao realizar o registro:', error);
       }
-    }
+    },
+    ...mapActions([
+      'fetchProducts'
+    ]),
   },
 
   setup() {
     const file = ref(null);
     const stringBase64 = ref('');
     const categories = ref([] as Category[]);
-    const router = useRouter();
 
     const handleFileUpload = async () => {
       const files = file.value ? file.value['files'] : null;
@@ -225,16 +225,9 @@ export default defineComponent({
         console.error('Erro ao buscar dados:', error);
       }
     };
-
-    const goToDashboard = () => {
-      window.location.reload();
-      //router.replace('/dashboard');
-    };
-
     onMounted(getCategories);
     return {
       handleFileUpload,
-      goToDashboard,
       file,
       stringBase64,
       categories
