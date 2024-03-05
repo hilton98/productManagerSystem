@@ -74,9 +74,10 @@ export default defineComponent({
             this.showLoading = true;
             try {
                 const response = await apiService.post<ReponseData>('api/login', this.postData);
-                Cookies.set(process.env.VUE_APP_TOKEN_API, response.access_token, { expires: 1 });
-                this.goToDashboard();
-                console.log(response);
+                if (response.access_token) {
+                    Cookies.set(process.env.VUE_APP_TOKEN_API, response.access_token, { expires: 1 });
+                    this.goToDashboard();
+                }
             } catch (error) {
                 this.message = 'Erro ao submeter dados de criação!';
                 this.showMessage = true;
@@ -86,13 +87,12 @@ export default defineComponent({
                 console.error('Erro ao realizar o registro:', error);
             }
             this.showLoading = false;
-        }
+        },
     },
     setup() {
         const router = useRouter();
         const goToDashboard = () => {
-            window.location.reload();
-            //router.replace('/dashboard');
+            router.replace('/dashboard');
         };
 
         const goToRegister = () => {

@@ -6,7 +6,8 @@ import Cookies from 'js-cookie';
 
 //createApp(App).use(store).use(router).mount('#app')
 
-const app = createApp(App)
+const app = createApp(App);
+app.use(store);
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
