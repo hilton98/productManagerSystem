@@ -27,9 +27,9 @@
 
                 <div class="p-2">
                     <button @click="goToRegister" class="btn btn-primary">
-                        <div v-if="!showLoading">Registrar-se</div>
-                        <div v-if="showLoading" class="d-flex justify-content-center">
-                            <div class="spinner-border" role="status">
+                        <div :disabled="showLoading">Registrar-se</div>
+                        <div class="d-flex justify-content-center">
+                            <div role="status">
                             </div>
                         </div>
                     </button>
@@ -40,7 +40,7 @@
         </form>
     </div>
 </template>
-  
+
 <script lang="ts">
 import Cookies from 'js-cookie';
 import { defineComponent } from 'vue';
@@ -105,6 +105,5 @@ export default defineComponent({
     },
 });
 </script>
-  
+
 <style scoped></style>
-  

@@ -15,8 +15,8 @@
             </div>
             <div class="form-group p-2">
                 <label for="exampleInputPassword1">Definir senha</label>
-                <input v-model="postData.password" required type="password" class="form-control" id="exampleInputPassword1"
-                    placeholder="Senha Definitiva">
+                <input v-model="postData.password" required type="password" class="form-control"
+                    id="exampleInputPassword1" placeholder="Senha Definitiva">
             </div>
 
             <div class="form-group p-2">
@@ -34,10 +34,10 @@
                 </button>
 
                 <div class="p-2">
-                    <button @click="goToLogin" class="btn btn-primary">
-                        <div v-if="!showLoading">Voltar</div>
-                        <div v-if="showLoading" class="d-flex justify-content-center">
-                            <div class="spinner-border" role="status">
+                    <button :disabled="showLoading" @click="goToLogin" class="btn btn-primary">
+                        <div>Voltar</div>
+                        <div class="d-flex justify-content-center">
+                            <div role="status">
                             </div>
                         </div>
                     </button>
@@ -46,7 +46,7 @@
         </form>
     </div>
 </template>
-  
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
@@ -111,6 +111,6 @@ export default defineComponent({
         };
     },
 });
-</script>  
+</script>
+
 <style scoped></style>
-  
