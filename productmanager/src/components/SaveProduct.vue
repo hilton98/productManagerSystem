@@ -21,7 +21,8 @@
 
             <div class="mb-3">
               <label for="price" class="form-label">Preço</label>
-              <input v-model="postData.price" required type="number" class="form-control" id="price">
+              <input v-model="postData.price" required type="text" @keyup="handleInsertMoney" class="form-control"
+                id="price">
             </div>
 
             <div class="mb-3">
@@ -67,7 +68,7 @@
     </div>
   </div>
 </template>
-  
+
 <script lang="ts">
 import { Product, Category } from '@/types';
 import { defineComponent, PropType, ref, onMounted, onUpdated } from 'vue';
@@ -107,7 +108,7 @@ export default defineComponent({
         id: this.product ? this.product.id : '',
         name: this.product ? this.product.name : '',
         description: this.product ? this.product.description : '',
-        price: (this.product ? this.product.price : 0.0),
+        price: (this.product ? this.insertMasMoney(this.product.price) : this.insertMasMoney(0.0)),
         expiration_dt: this.product ? this.product.expiration_dt : '',
         image: this.product ? this.product.image : '',
         categoryId: this.product ? this.product.category.id : 0,
@@ -119,11 +120,36 @@ export default defineComponent({
     closeModal() {
       this.callback(false);
     },
-
     handleActionClick(categoryId: number) {
       this.postData.categoryId = categoryId;
     },
+    handleInsertMoney(event: KeyboardEvent) {
+      const caractere = event.key;
+      const regexLettersSpecialChar = /[\p{L}]/u;
+      let price = this.removeMask(this.postData.price);
 
+      if (caractere === 'Backspace' || caractere === 'Delete') {
+        this.postData.price = this.getMoneyMounted(price);
+        return;
+      }
+
+      if (regexLettersSpecialChar.test(caractere))
+        price = price.replace(caractere, '');
+
+      this.postData.price = this.getMoneyMounted(price);
+    },
+    getMoneyMounted(priceText: string) {
+      const newPrice = priceText.replace('.', '');
+      const integerPart = priceText.replace('.', '').split('').slice(0, -2).join().replaceAll(',', '');
+      const decimalPart = `${newPrice[newPrice.length - 2]}${newPrice[newPrice.length - 1]}`;
+      return this.insertMasMoney(Number(`${integerPart}.${decimalPart}`));
+    },
+    removeMask(value: string) {
+      return value.replace('R$', '').replaceAll('.', '').replace(',', '.');
+    },
+    insertMasMoney(value: number) {
+      return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' });
+    },
     async getCategories() {
       try {
         const data = await apiService.get<Category[]>('category');
@@ -135,6 +161,7 @@ export default defineComponent({
 
     async submit() {
       this.postData.image = this.stringBase64;
+      this.postData.price = Number(this.removeMask(this.postData.price));
       if (this.postData.id !== '') {
         await this.update();
       } else {
@@ -216,6 +243,5 @@ export default defineComponent({
 });
 
 </script>
-  
+
 <style scoped></style>
-  

@@ -10,10 +10,13 @@
             <p class="card-text"><span style="font-weight: bold">Descrição: </span>{{ product.description }}</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item text-truncate"><span style="font-weight: bold">Nome:</span> {{ product.name }}</li>
-            <li class="list-group-item text-truncate"><span style="font-weight: bold">Preço:</span> {{ product.price }}</li>
+            <li class="list-group-item text-truncate"><span style="font-weight: bold">Nome:</span> {{ product.name }}
+            </li>
+            <li class="list-group-item text-truncate"><span style="font-weight: bold">Preço:</span> {{
+        product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' })
+    }}</li>
             <li class="list-group-item text-truncate"><span style="font-weight: bold">Validade:</span> {{
-                product.expiration_dt }}</li>
+            product.expiration_dt }}</li>
         </ul>
         <div class="d-flex justify-content-between card-body">
             <div>
@@ -67,7 +70,7 @@
         </div>
     </div>
 </template>
-  
+
 <script lang="ts">
 import { Product } from '@/types';
 import SaveProduct from '@/components/SaveProduct.vue';
@@ -105,7 +108,7 @@ export default defineComponent({
     },
 });
 </script>
-  
+
 <style scoped>
 .default-image {
     width: 250px;
@@ -119,4 +122,3 @@ export default defineComponent({
     object-fit: cover;
 }
 </style>
-  
