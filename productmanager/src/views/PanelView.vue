@@ -1,4 +1,3 @@
-
 <template>
   <SaveProduct v-if="isOpenModalUpdate" :title=titleModal :callback=viewModal />
 
@@ -24,12 +23,15 @@
 
     </div>
 
-    <div>
-      <DashboardCards :queryParam=serachText />
+    <div class="d-flex justify-content-center">
+      <div>
+        <DashboardCards :queryParam=serachText />
+      </div>
     </div>
+
   </div>
 </template>
-  
+
 <script lang="ts">
 import DashboardCards from '@/components/DashboardCards.vue';
 import SaveProduct from '@/components/SaveProduct.vue';
@@ -70,4 +72,3 @@ export default defineComponent({
   },
 });
 </script>
-  
