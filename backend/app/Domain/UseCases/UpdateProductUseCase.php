@@ -45,14 +45,10 @@ class UpdateProductUseCase implements UpdateProductUseCaseInterface
             $product->setDescription($this->assignValue($data, 'description', $product->getDescription()));
             $product->setPrice($this->assignValue($data, 'price', $product->getPrice()));
             $product->setExpirationDt($this->assignValue($data, 'expiration_dt', $product->getExpirationDt()));
-            $product->setImage(
-                $this->imageStorageUseCase->execute(
-                    $this->assignValue($data, 'image', $product->getImage())
-                )
-            );
+            $product->setImage($this->assignValueImage($data, 'image', $product->getImage()));
             $product->setCategory($this->assignCategory($data, 'categoryId', $product->getCategory()));
             $product->setUpdatedAt(now());
-            $this->productRepository->save($product);    
+            $this->productRepository->save($product);
             return ['isSuccess' => true, 'message' => 'Product updated successfully.'];
         } catch (\Exception $e) {
             return ['isSuccess' => false, 'message' => $e->getMessage()];
@@ -63,6 +59,14 @@ class UpdateProductUseCase implements UpdateProductUseCaseInterface
     {
         if(isset($columns[$index])){
             return $columns[$index];
+        }
+        return $data;
+    }
+
+    private function assignValueImage($columns, $index, $data)
+    {
+        if(isset($columns[$index])){
+            return $this->imageStorageUseCase->execute($columns[$index]);
         }
         return $data;
     }

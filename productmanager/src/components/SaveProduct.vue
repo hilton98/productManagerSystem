@@ -155,14 +155,23 @@ export default defineComponent({
         console.error('Erro ao buscar dados:', error);
       }
     },
-
-    async submit() {
+    handleImage() {
+      let data = {};
       if (this.stringBase64.length > 0) {
         this.postData.image = this.stringBase64;
+        const { ...dataUpdate } = this.postData;
+        data = dataUpdate;
+      } else {
+        const { image, ...dataUpdate } = this.postData;
+        data = dataUpdate;
       }
+      return data;
+    },
+    async submit() {
       this.postData.price = Number(this.removeMask(this.postData.price));
-      if (this.postData.id !== '') {
-        await this.update();
+      const dataUpdate = this.handleImage();
+      if (this.postData.id !== '' && dataUpdate) {
+        await this.update(dataUpdate);
       } else {
         await this.create();
       }
@@ -170,11 +179,11 @@ export default defineComponent({
       this.callback(false);
     },
 
-    async update() {
+    async update(data: object) {
       try {
         const response = await apiService.put<ReponseData>(
           `product/${this.postData.id}`,
-          this.postData,
+          data,
           Cookies.get(process.env.VUE_APP_TOKEN_API)
         );
         console.log(response);

@@ -8,8 +8,7 @@
     </div>
   </div>
 
-  <div class="d-flex justify-content-center">
-
+  <div v-if="userProducts.length > 0" class="d-flex justify-content-center">
     <nav aria-label="...">
       <ul class="pagination">
         <li :class="{ 'page-item': true, 'disabled': isDisablePrevious }">
@@ -74,6 +73,7 @@ export default defineComponent({
       const isFirstPage = numberPage === 0;
       const isLastPage = totalNumberPages === numberPage;
       const isMiddlePage = 0 < numberPage && numberPage < totalNumberPages;
+      const isOnlyPage = isFirstPage && isLastPage;
       this.currentPage = numberPage;
 
       if (isFirstPage) {
@@ -87,6 +87,10 @@ export default defineComponent({
       if (isMiddlePage) {
         this.isDisablePrevious = false;
         this.isDisableNext = false;
+      }
+      if (isOnlyPage) {
+        this.isDisablePrevious = true;
+        this.isDisableNext = true;
       }
     },
     consultProducts(products: Product[]) {
